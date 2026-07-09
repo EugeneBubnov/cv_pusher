@@ -94,7 +94,6 @@ class OzonVacancyPage(BasePage):
         )
 
         expect(self.find(l.MODAL_HEADING)).to_be_visible(timeout=10_000)
-        # TODO: допилить заполнение формы
         self.find(l.LAST_NAME).fill(user.last_name)
         self.find(l.FIRST_NAME).fill(user.first_name)
         self.find(l.EMAIL).fill(user.email)
