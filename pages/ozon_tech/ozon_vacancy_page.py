@@ -89,6 +89,10 @@ class OzonVacancyPage(BasePage):
                 logger.error(error_msg)
                 raise AttributeError(error_msg)
 
+        logger.info(
+            f"Форма будет заполнена данными пользователя: {json.dumps(user.__dict__, indent=2, ensure_ascii=False)}"
+        )
+
         expect(self.find(l.MODAL_HEADING)).to_be_visible(timeout=10_000)
         # TODO: допилить заполнение формы
         self.find(l.LAST_NAME).fill(user.last_name)

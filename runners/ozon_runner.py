@@ -36,13 +36,6 @@ def main(user: User):
 
 
 if __name__ == "__main__":
-    # Ввести свои данные для отправки формы
-    user = User(
-        first_name="",
-        last_name="",
-        email="",
-        phone="",
-        telegram="",
-    )
+    user = User.create_user_by_hh_cv()
 
     main(user)
