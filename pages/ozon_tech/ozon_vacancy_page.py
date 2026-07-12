@@ -1,5 +1,4 @@
 import json
-import logging
 from urllib.parse import urlencode
 
 from playwright.sync_api import Response, expect
@@ -8,17 +7,6 @@ from pages.base_page import BasePage
 from pages.ozon_tech.ozon_vacancy_locators import OzonVacancyLocators as l
 from user.user import User
 from utils.browser_manager import browser_session
-
-logging.basicConfig(
-    level=logging.INFO,
-    datefmt="[%d.%m.%Y | %H:%M:%S",
-    format="%(asctime)s | %(levelname)s] %(message)s",
-    handlers=[
-        logging.StreamHandler(),  # Вывод в консоль
-    ],
-)
-
-logger = logging.getLogger(__name__)
 
 
 class OzonVacancyPage(BasePage):
@@ -37,7 +25,7 @@ class OzonVacancyPage(BasePage):
         for vacancy in vacancy_list:
             link = vacancy.get_attribute(name="href", timeout=5000)
             links.append(link)
-            logger.info(f"Найдена ссылка: {self.base_url}{link}")
+            self.logger.info(f"Найдена ссылка: {self.base_url}{link}")
 
         return links
 
@@ -49,7 +37,7 @@ class OzonVacancyPage(BasePage):
         """
         self.page.goto(f"{self.base_url}{link}")
         self.page.wait_for_load_state("networkidle")
-        logger.info(f"Выполнен переход по ссылке: {self.base_url}{link}")
+        self.logger.info(f"Выполнен переход по ссылке: {self.base_url}{link}")
 
     def read_vacancy(self):
         """Прочитать вакансию"""
@@ -68,7 +56,7 @@ class OzonVacancyPage(BasePage):
 
         vacancy_info["requirements"] = requirements
 
-        logger.info(
+        self.logger.info(
             f"Найдены данные по вакансии:\n{json.dumps(vacancy_info, indent=2, ensure_ascii=False)}"
         )
 
@@ -88,10 +76,10 @@ class OzonVacancyPage(BasePage):
                     f"Атрибут '{attr_name}' не может быть пустым, "
                     f"текущее значение: '{attr_value}'"
                 )
-                logger.error(error_msg)
+                self.logger.error(error_msg)
                 raise AttributeError(error_msg)
 
-        logger.info(
+        self.logger.info(
             f"Форма будет заполнена данными пользователя: {json.dumps(user.__dict__, indent=2, ensure_ascii=False)}"
         )
 
@@ -122,7 +110,7 @@ class OzonVacancyPage(BasePage):
         )
 
         self.page.wait_for_timeout(1000)
-        logger.info("Резюме отправлено успешно")
+        self.logger.info("Резюме отправлено успешно")
 
     @staticmethod
     def push_cv(user: User):
