@@ -72,7 +72,7 @@ class OzonVacancyPage(BasePage):
             f"Найдены данные по вакансии:\n{json.dumps(vacancy_info, indent=2, ensure_ascii=False)}"
         )
 
-    def click_on_submit_button(self):
+    def click_on_respond_button(self):
         """Нажать кнопку: [Откликнуться]"""
         self.find(l.OPEN_MODAL_BTN).click()
 
@@ -152,5 +152,5 @@ class OzonVacancyPage(BasePage):
             for link in links:
                 ozon_page.open_card_by_link(link)
                 ozon_page.read_vacancy()
-                ozon_page.click_on_submit_button()
+                ozon_page.click_on_respond_button()
                 ozon_page.complete_the_form(user)
