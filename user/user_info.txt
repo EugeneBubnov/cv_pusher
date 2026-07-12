@@ -1,0 +1,9 @@
+В текущую папку нужно добавить файл user_info.json с данными пользователя в виде:
+{
+    "first_name": "foo",
+    "last_name": "bar",
+    "email": "foobar@barfoo.ru",
+    "phone": "9000000000",
+    "telegram": "@foo_bar",
+    "comment": "Hi, i'm foobar"
+}

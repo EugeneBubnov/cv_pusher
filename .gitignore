@@ -5,3 +5,5 @@ DS_Store
 cv.pdf
 __pycache__
 .pytest_cache
+user_info.json
+sandbox

@@ -36,6 +36,6 @@ def main(user: User):
 
 
 if __name__ == "__main__":
-    user = User.create_user_by_hh_cv()
+    user = User.create_user_by_json()
 
     main(user)
