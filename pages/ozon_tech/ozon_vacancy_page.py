@@ -1,11 +1,13 @@
 import json
 import logging
+from urllib.parse import urlencode
 
 from playwright.sync_api import Response, expect
 
 from pages.base_page import BasePage
 from pages.ozon_tech.ozon_vacancy_locators import OzonVacancyLocators as l
 from user.user import User
+from utils.browser_manager import browser_session
 
 logging.basicConfig(
     level=logging.INFO,
@@ -111,6 +113,7 @@ class OzonVacancyPage(BasePage):
         with self.page.expect_response(
             "https://ozon.tech/p-api/ozon-tech/vacancy/apply"
         ) as response_info:
+            self.page.pause()
             self.find(l.SUBMIT_BTN).click()
 
         response: Response = response_info.value
@@ -120,3 +123,34 @@ class OzonVacancyPage(BasePage):
 
         self.page.wait_for_timeout(1000)
         logger.info("Резюме отправлено успешно")
+
+    @staticmethod
+    def push_cv(user: User):
+        """Выполняет процесс отправки резюме"""
+        with browser_session() as page:
+            # Ввести параметры поиска вакансии
+            query_params = {
+                "search": "авто",
+                "directions": "Тестирование",
+                "levels": "Middle",
+                "techs": "Python",
+                "work_formats": "Удалённая работа",
+            }
+
+            path_params = f"?{urlencode(query_params)}"
+
+            ozon_page = OzonVacancyPage(
+                page=page,
+                base_url="https://ozon.tech",
+                page_url="vacancies",
+                path_params=path_params,
+            )
+
+            ozon_page.open_page()
+            links = ozon_page.get_current_vacancy_list()
+
+            for link in links:
+                ozon_page.open_card_by_link(link)
+                ozon_page.read_vacancy()
+                ozon_page.click_on_submit_button()
+                ozon_page.complete_the_form(user)
